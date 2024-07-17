@@ -188,20 +188,6 @@ function useFetchForeignAsset(
               hexToUint8Array(originAssetHex)
             );
           }
-        : foreignChain === CHAIN_ID_ALGORAND
-        ? () => {
-            const algodClient = new Algodv2(
-              ALGORAND_HOST.algodToken,
-              ALGORAND_HOST.algodServer,
-              ALGORAND_HOST.algodPort
-            );
-            return getForeignAssetAlgorand(
-              algodClient,
-              ALGORAND_TOKEN_BRIDGE_ID,
-              originChain,
-              originAssetHex
-            );
-          }
         : foreignChain === CHAIN_ID_INJECTIVE
         ? () => {
             const client = getInjectiveWasmClient();

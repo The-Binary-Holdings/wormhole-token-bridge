@@ -172,43 +172,43 @@ export async function updateWrappedOnSui(
   return tx;
 }
 
-async function algo(
-  dispatch: any,
-  enqueueSnackbar: any,
-  senderAddr: string,
-  signedVAA: Uint8Array
-) {
-  dispatch(setIsCreating(true));
-  try {
-    const algodClient = new algosdk.Algodv2(
-      ALGORAND_HOST.algodToken,
-      ALGORAND_HOST.algodServer,
-      ALGORAND_HOST.algodPort
-    );
-    const txs = await createWrappedOnAlgorand(
-      algodClient,
-      ALGORAND_TOKEN_BRIDGE_ID,
-      ALGORAND_BRIDGE_ID,
-      senderAddr,
-      signedVAA
-    );
-    const result = await signSendAndConfirmAlgorand(algodClient, txs);
-    dispatch(
-      setCreateTx({
-        id: txs[txs.length - 1].tx.txID(),
-        block: result["confirmed-round"],
-      })
-    );
-    enqueueSnackbar(null, {
-      content: <Alert severity="success">Transaction confirmed</Alert>,
-    });
-  } catch (e) {
-    enqueueSnackbar(null, {
-      content: <Alert severity="error">{parseError(e)}</Alert>,
-    });
-    dispatch(setIsCreating(false));
-  }
-}
+// async function algo(
+//   dispatch: any,
+//   enqueueSnackbar: any,
+//   senderAddr: string,
+//   signedVAA: Uint8Array
+// ) {
+//   dispatch(setIsCreating(true));
+//   try {
+//     const algodClient = new algosdk.Algodv2(
+//       ALGORAND_HOST.algodToken,
+//       ALGORAND_HOST.algodServer,
+//       ALGORAND_HOST.algodPort
+//     );
+//     const txs = await createWrappedOnAlgorand(
+//       algodClient,
+//       ALGORAND_TOKEN_BRIDGE_ID,
+//       ALGORAND_BRIDGE_ID,
+//       senderAddr,
+//       signedVAA
+//     );
+//     const result = await signSendAndConfirmAlgorand(algodClient, txs);
+//     dispatch(
+//       setCreateTx({
+//         id: txs[txs.length - 1].tx.txID(),
+//         block: result["confirmed-round"],
+//       })
+//     );
+//     enqueueSnackbar(null, {
+//       content: <Alert severity="success">Transaction confirmed</Alert>,
+//     });
+//   } catch (e) {
+//     enqueueSnackbar(null, {
+//       content: <Alert severity="error">{parseError(e)}</Alert>,
+//     });
+//     dispatch(setIsCreating(false));
+//   }
+// }
 
 async function aptos(
   dispatch: any,
@@ -737,12 +737,6 @@ export function useHandleCreateWrapped(
         shouldUpdate,
         signAndSubmitTransaction
       );
-    } else if (
-      targetChain === CHAIN_ID_ALGORAND &&
-      algoAccounts[0] &&
-      !!signedVAA
-    ) {
-      algo(dispatch, enqueueSnackbar, algoAccounts[0]?.address, signedVAA);
     } else if (
       targetChain === CHAIN_ID_INJECTIVE &&
       injWallet &&

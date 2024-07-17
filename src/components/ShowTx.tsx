@@ -1,6 +1,5 @@
 import {
   ChainId,
-  CHAIN_ID_ALGORAND,
   CHAIN_ID_AURORA,
   CHAIN_ID_AVAX,
   CHAIN_ID_BSC,
@@ -25,6 +24,7 @@ import {
   CHAIN_ID_OPTIMISM,
   CHAIN_ID_SEPOLIA,
   CHAIN_ID_SUI,
+  CHAIN_ID_OPTIMISM_SEPOLIA
 } from "@certusone/wormhole-sdk";
 import { Button, makeStyles, Typography } from "@material-ui/core";
 import { Transaction } from "../store/transferSlice";
@@ -121,10 +121,6 @@ export default function ShowTx({
             ? "pisco-1"
             : "phoenix-1"
         }/tx/${tx?.id}`
-      : chainId === CHAIN_ID_ALGORAND
-      ? `https://${CLUSTER === "testnet" ? "testnet." : ""}algoexplorer.io/tx/${
-          tx?.id
-        }`
       : chainId === CHAIN_ID_MOONBEAM
       ? `https://${CLUSTER === "testnet" ? "moonbase." : ""}moonscan.io/tx/${
           tx?.id
@@ -135,8 +131,12 @@ export default function ShowTx({
         }`
       : chainId === CHAIN_ID_OPTIMISM
       ? `https://${
-          CLUSTER === "testnet" ? "goerli-" : ""
+          CLUSTER === "testnet" ? "sepolia-" : ""
         }optimism.etherscan.io/tx/${tx?.id}`
+      : chainId === CHAIN_ID_OPTIMISM_SEPOLIA
+        ? `https://${
+            CLUSTER === "testnet" ? "goerli-" : ""
+          }optimism.etherscan.io/tx/${tx?.id}`
       : chainId === CHAIN_ID_XPLA
       ? `https://explorer.xpla.io/${
           CLUSTER === "testnet" ? "testnet/" : ""

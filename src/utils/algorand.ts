@@ -1,6 +1,6 @@
 import { TransactionSignerPair } from "@certusone/wormhole-sdk/lib/esm/algorand";
 import MyAlgoConnect from "@randlabs/myalgo-connect";
-import { Algodv2, assignGroupID, waitForConfirmation } from "algosdk";
+import { Algodv2, assignGroupID, TransactionLike, waitForConfirmation } from "algosdk";
 import { ALGORAND_WAIT_FOR_CONFIRMATIONS } from "./consts";
 
 export async function signSendAndConfirmAlgorand(
@@ -8,7 +8,7 @@ export async function signSendAndConfirmAlgorand(
   txs: TransactionSignerPair[]
 ) {
   const myAlgoConnect = new MyAlgoConnect();
-  assignGroupID(txs.map((tx) => tx.tx));
+  assignGroupID(txs.map((tx) => tx.tx) as TransactionLike[]);
   const signedTxns: Uint8Array[] = [];
   const lsigSignedTxns: Uint8Array[] = [];
   const walletUnsignedTxns: Uint8Array[] = [];

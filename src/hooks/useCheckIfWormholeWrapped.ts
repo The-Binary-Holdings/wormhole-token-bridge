@@ -65,6 +65,7 @@ import { makeNearProvider } from "../utils/near";
 import { getOriginalAssetSei, getSeiWasmClient } from "../utils/sei";
 import { base58 } from "ethers/lib/utils";
 import { getSuiProvider } from "../utils/sui";
+import AlgodClient from "algosdk/dist/types/src/client/v2/algod/algod";
 
 export interface StateSafeWormholeWrappedInfo {
   isWrapped: boolean;
@@ -189,25 +190,6 @@ function useCheckIfWormholeWrapped(nft?: boolean) {
         } catch (e) {
           console.error(e);
         }
-      }
-      if (sourceChain === CHAIN_ID_ALGORAND && sourceAsset) {
-        try {
-          const algodClient = new Algodv2(
-            ALGORAND_HOST.algodToken,
-            ALGORAND_HOST.algodServer,
-            ALGORAND_HOST.algodPort
-          );
-          const wrappedInfo = makeStateSafe(
-            await getOriginalAssetAlgorand(
-              algodClient,
-              ALGORAND_TOKEN_BRIDGE_ID,
-              BigInt(sourceAsset)
-            )
-          );
-          if (!cancelled) {
-            dispatch(setSourceWormholeWrappedInfo(wrappedInfo));
-          }
-        } catch (e) {}
       }
       if (sourceChain === CHAIN_ID_INJECTIVE && sourceAsset) {
         try {

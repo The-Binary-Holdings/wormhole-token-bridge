@@ -122,60 +122,60 @@ import { postWithFees, waitForTerraExecution } from "../utils/terra";
 import { postWithFeesXpla, waitForXplaExecution } from "../utils/xpla";
 import { attestFromSeiMsg, parseSequenceFromLogSei } from "../utils/sei";
 
-async function algo(
-  dispatch: any,
-  enqueueSnackbar: any,
-  senderAddr: string,
-  sourceAsset: string
-) {
-  dispatch(setIsSending(true));
-  try {
-    const algodClient = new algosdk.Algodv2(
-      ALGORAND_HOST.algodToken,
-      ALGORAND_HOST.algodServer,
-      ALGORAND_HOST.algodPort
-    );
-    const txs = await attestFromAlgorand(
-      algodClient,
-      ALGORAND_TOKEN_BRIDGE_ID,
-      ALGORAND_BRIDGE_ID,
-      senderAddr,
-      BigInt(sourceAsset)
-    );
-    const result = await signSendAndConfirmAlgorand(algodClient, txs);
-    const sequence = parseSequenceFromLogAlgorand(result);
-    // TODO: fill these out correctly
-    dispatch(
-      setAttestTx({
-        id: txs[txs.length - 1].tx.txID(),
-        block: result["confirmed-round"],
-      })
-    );
-    enqueueSnackbar(null, {
-      content: <Alert severity="success">Transaction confirmed</Alert>,
-    });
-    const emitterAddress = getEmitterAddressAlgorand(ALGORAND_TOKEN_BRIDGE_ID);
-    enqueueSnackbar(null, {
-      content: <Alert severity="info">Fetching VAA</Alert>,
-    });
-    const { vaaBytes } = await getSignedVAAWithRetry(
-      WORMHOLE_RPC_HOSTS,
-      CHAIN_ID_ALGORAND,
-      emitterAddress,
-      sequence
-    );
-    dispatch(setSignedVAAHex(uint8ArrayToHex(vaaBytes)));
-    enqueueSnackbar(null, {
-      content: <Alert severity="success">Fetched Signed VAA</Alert>,
-    });
-  } catch (e) {
-    console.error(e);
-    enqueueSnackbar(null, {
-      content: <Alert severity="error">{parseError(e)}</Alert>,
-    });
-    dispatch(setIsSending(false));
-  }
-}
+// async function algo(
+//   dispatch: any,
+//   enqueueSnackbar: any,
+//   senderAddr: string,
+//   sourceAsset: string
+// ) {
+//   dispatch(setIsSending(true));
+//   try {
+//     const algodClient = new algosdk.Algodv2(
+//       ALGORAND_HOST.algodToken,
+//       ALGORAND_HOST.algodServer,
+//       ALGORAND_HOST.algodPort
+//     );
+//     const txs = await attestFromAlgorand(
+//       algodClient,
+//       ALGORAND_TOKEN_BRIDGE_ID,
+//       ALGORAND_BRIDGE_ID,
+//       senderAddr,
+//       BigInt(sourceAsset)
+//     );
+//     const result = await signSendAndConfirmAlgorand(algodClient, txs);
+//     const sequence = parseSequenceFromLogAlgorand(result);
+//     // TODO: fill these out correctly
+//     dispatch(
+//       setAttestTx({
+//         id: txs[txs.length - 1].tx.txID(),
+//         block: result["confirmed-round"],
+//       })
+//     );
+//     enqueueSnackbar(null, {
+//       content: <Alert severity="success">Transaction confirmed</Alert>,
+//     });
+//     const emitterAddress = getEmitterAddressAlgorand(ALGORAND_TOKEN_BRIDGE_ID);
+//     enqueueSnackbar(null, {
+//       content: <Alert severity="info">Fetching VAA</Alert>,
+//     });
+//     const { vaaBytes } = await getSignedVAAWithRetry(
+//       WORMHOLE_RPC_HOSTS,
+//       CHAIN_ID_ALGORAND,
+//       emitterAddress,
+//       sequence
+//     );
+//     dispatch(setSignedVAAHex(uint8ArrayToHex(vaaBytes)));
+//     enqueueSnackbar(null, {
+//       content: <Alert severity="success">Fetched Signed VAA</Alert>,
+//     });
+//   } catch (e) {
+//     console.error(e);
+//     enqueueSnackbar(null, {
+//       content: <Alert severity="error">{parseError(e)}</Alert>,
+//     });
+//     dispatch(setIsSending(false));
+//   }
+// }
 
 async function aptos(
   dispatch: any,
@@ -705,8 +705,6 @@ export function useHandleAttest() {
       );
     } else if (sourceChain === CHAIN_ID_XPLA && !!xplaWallet) {
       xpla(dispatch, enqueueSnackbar, xplaWallet, sourceAsset);
-    } else if (sourceChain === CHAIN_ID_ALGORAND && algoAccounts[0]) {
-      algo(dispatch, enqueueSnackbar, algoAccounts[0].address, sourceAsset);
     } else if (sourceChain === CHAIN_ID_APTOS && aptosAddress) {
       aptos(dispatch, enqueueSnackbar, sourceAsset, signAndSubmitTransaction);
     } else if (sourceChain === CHAIN_ID_INJECTIVE && injWallet && injAddress) {

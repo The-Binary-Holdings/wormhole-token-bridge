@@ -1,6 +1,5 @@
 import {
   ChainId,
-  CHAIN_ID_ALGORAND,
   CHAIN_ID_AURORA,
   CHAIN_ID_AVAX,
   CHAIN_ID_BSC,
@@ -28,6 +27,7 @@ import {
   CHAIN_ID_OPTIMISM,
   CHAIN_ID_SEPOLIA,
   CHAIN_ID_SUI,
+  CHAIN_ID_OPTIMISM_SEPOLIA
 } from "@certusone/wormhole-sdk";
 import { Button, makeStyles, Tooltip, Typography } from "@material-ui/core";
 import { FileCopy, OpenInNew } from "@material-ui/icons";
@@ -171,6 +171,10 @@ export default function SmartAddress({
     ? `https://${CLUSTER === "testnet" ? "goerli-" : ""}optimism.etherscan.io/${
         isAsset ? "token" : "address"
       }/${useableAddress}`
+    : chainId === CHAIN_ID_OPTIMISM_SEPOLIA
+      ? `https://${CLUSTER === "testnet" ? "sepolia-" : ""}optimism.etherscan.io/${
+          isAsset ? "token" : "address"
+        }/${useableAddress}`
     : chainId === CHAIN_ID_KARURA
     ? `https://${
         CLUSTER === "testnet"
@@ -199,10 +203,6 @@ export default function SmartAddress({
           ? "pisco-1"
           : "phoenix-1"
       }/address/${useableAddress}`
-    : chainId === CHAIN_ID_ALGORAND
-    ? `https://${CLUSTER === "testnet" ? "testnet." : ""}algoexplorer.io/${
-        isAsset ? "asset" : "address"
-      }/${useableAddress}`
     : chainId === CHAIN_ID_XPLA
     ? `https://explorer.xpla.io/${
         CLUSTER === "testnet" ? "testnet/" : ""

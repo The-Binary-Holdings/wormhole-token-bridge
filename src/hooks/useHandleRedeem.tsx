@@ -104,44 +104,44 @@ import { postWithFees } from "../utils/terra";
 import { postWithFeesXpla } from "../utils/xpla";
 import useTransferSignedVAA from "./useTransferSignedVAA";
 
-async function algo(
-  dispatch: any,
-  enqueueSnackbar: any,
-  senderAddr: string,
-  signedVAA: Uint8Array
-) {
-  dispatch(setIsRedeeming(true));
-  try {
-    const algodClient = new algosdk.Algodv2(
-      ALGORAND_HOST.algodToken,
-      ALGORAND_HOST.algodServer,
-      ALGORAND_HOST.algodPort
-    );
-    const txs = await redeemOnAlgorand(
-      algodClient,
-      ALGORAND_TOKEN_BRIDGE_ID,
-      ALGORAND_BRIDGE_ID,
-      signedVAA,
-      senderAddr
-    );
-    const result = await signSendAndConfirmAlgorand(algodClient, txs);
-    // TODO: fill these out correctly
-    dispatch(
-      setRedeemTx({
-        id: txs[txs.length - 1].tx.txID(),
-        block: result["confirmed-round"],
-      })
-    );
-    enqueueSnackbar(null, {
-      content: <Alert severity="success">Transaction confirmed</Alert>,
-    });
-  } catch (e) {
-    enqueueSnackbar(null, {
-      content: <Alert severity="error">{parseError(e)}</Alert>,
-    });
-    dispatch(setIsRedeeming(false));
-  }
-}
+// async function algo(
+//   dispatch: any,
+//   enqueueSnackbar: any,
+//   senderAddr: string,
+//   signedVAA: Uint8Array
+// ) {
+//   dispatch(setIsRedeeming(true));
+//   try {
+//     const algodClient = new algosdk.Algodv2(
+//       ALGORAND_HOST.algodToken,
+//       ALGORAND_HOST.algodServer,
+//       ALGORAND_HOST.algodPort
+//     );
+//     const txs = await redeemOnAlgorand(
+//       algodClient,
+//       ALGORAND_TOKEN_BRIDGE_ID,
+//       ALGORAND_BRIDGE_ID,
+//       signedVAA,
+//       senderAddr
+//     );
+//     const result = await signSendAndConfirmAlgorand(algodClient, txs);
+//     // TODO: fill these out correctly
+//     dispatch(
+//       setRedeemTx({
+//         id: txs[txs.length - 1].tx.txID(),
+//         block: result["confirmed-round"],
+//       })
+//     );
+//     enqueueSnackbar(null, {
+//       content: <Alert severity="success">Transaction confirmed</Alert>,
+//     });
+//   } catch (e) {
+//     enqueueSnackbar(null, {
+//       content: <Alert severity="error">{parseError(e)}</Alert>,
+//     });
+//     dispatch(setIsRedeeming(false));
+//   }
+// }
 
 async function aptos(
   dispatch: any,
@@ -550,12 +550,6 @@ export function useHandleRedeem() {
     } else if (targetChain === CHAIN_ID_APTOS && !!aptosAddress && signedVAA) {
       aptos(dispatch, enqueueSnackbar, signedVAA, signAndSubmitTransaction);
     } else if (
-      targetChain === CHAIN_ID_ALGORAND &&
-      algoAccounts[0] &&
-      !!signedVAA
-    ) {
-      algo(dispatch, enqueueSnackbar, algoAccounts[0]?.address, signedVAA);
-    } else if (
       targetChain === CHAIN_ID_INJECTIVE &&
       injWallet &&
       injAddress &&
@@ -639,12 +633,6 @@ export function useHandleRedeem() {
         terraFeeDenom,
         targetChain
       ); //TODO isNative = true
-    } else if (
-      targetChain === CHAIN_ID_ALGORAND &&
-      algoAccounts[0] &&
-      !!signedVAA
-    ) {
-      algo(dispatch, enqueueSnackbar, algoAccounts[0]?.address, signedVAA);
     } else if (
       targetChain === CHAIN_ID_INJECTIVE &&
       injWallet &&

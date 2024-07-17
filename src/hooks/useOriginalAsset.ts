@@ -100,18 +100,7 @@ export async function getOriginalAssetToken(
         foreignNativeStringAddress,
         foreignChain
       );
-    } else if (foreignChain === CHAIN_ID_ALGORAND) {
-      const algodClient = new Algodv2(
-        ALGORAND_HOST.algodToken,
-        ALGORAND_HOST.algodServer,
-        ALGORAND_HOST.algodPort
-      );
-      promise = await getOriginalAssetAlgorand(
-        algodClient,
-        ALGORAND_TOKEN_BRIDGE_ID,
-        BigInt(foreignNativeStringAddress)
-      );
-    } else if (foreignChain === CHAIN_ID_APTOS) {
+    }  else if (foreignChain === CHAIN_ID_APTOS) {
       promise = await getOriginalAssetAptos(
         getAptosClient(),
         getTokenBridgeAddressForChain(CHAIN_ID_APTOS),

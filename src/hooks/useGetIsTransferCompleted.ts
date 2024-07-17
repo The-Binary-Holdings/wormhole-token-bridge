@@ -134,25 +134,6 @@ export default function useGetIsTransferCompleted(
             setIsLoading(false);
           }
         })();
-      } else if (isTerraChain(targetChain)) {
-        setIsLoading(true);
-        (async () => {
-          try {
-            const lcdClient = new LCDClient(getTerraConfig(targetChain));
-            transferCompleted = await getIsTransferCompletedTerra(
-              getTokenBridgeAddressForChain(targetChain),
-              signedVAA,
-              lcdClient,
-              getTerraGasPricesUrl(targetChain)
-            );
-          } catch (error) {
-            console.error(error);
-          }
-          if (!cancelled) {
-            setIsTransferCompleted(transferCompleted);
-            setIsLoading(false);
-          }
-        })();
       } else if (targetChain === CHAIN_ID_XPLA) {
         setIsLoading(true);
         (async () => {
@@ -188,29 +169,7 @@ export default function useGetIsTransferCompleted(
             setIsLoading(false);
           }
         })();
-      } else if (targetChain === CHAIN_ID_ALGORAND) {
-        setIsLoading(true);
-        (async () => {
-          try {
-            const algodClient = new algosdk.Algodv2(
-              ALGORAND_HOST.algodToken,
-              ALGORAND_HOST.algodServer,
-              ALGORAND_HOST.algodPort
-            );
-            transferCompleted = await getIsTransferCompletedAlgorand(
-              algodClient,
-              ALGORAND_TOKEN_BRIDGE_ID,
-              signedVAA
-            );
-          } catch (error) {
-            console.error(error);
-          }
-          if (!cancelled) {
-            setIsTransferCompleted(transferCompleted);
-            setIsLoading(false);
-          }
-        })();
-      } else if (targetChain === CHAIN_ID_INJECTIVE) {
+      }  else if (targetChain === CHAIN_ID_INJECTIVE) {
         setIsLoading(true);
         (async () => {
           try {

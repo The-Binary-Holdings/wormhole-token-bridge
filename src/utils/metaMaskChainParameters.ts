@@ -139,12 +139,12 @@ export const METAMASK_CHAIN_PARAMETERS: {
     rpcUrls: ["https://goerli.base.org"],
     blockExplorerUrls: ["https://goerli.basescan.org"],
   },
-  420: {
-    chainId: "0x1a4",
-    chainName: "Optimism Goerli Testnet",
+  11155420: {
+    chainId: "0xaa37dc",
+    chainName: "Optimism Sepolia Testnet",
     nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
-    rpcUrls: ["https://goerli.optimism.io"],
-    blockExplorerUrls: ["https://goerli-optimism.etherscan.io"],
+    rpcUrls: ["https://sepolia.optimism.io/"],
+    blockExplorerUrls: ["https://sepolia-optimism.etherscan.io"],
   },
 };
 

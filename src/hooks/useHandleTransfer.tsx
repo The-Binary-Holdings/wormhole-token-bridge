@@ -136,6 +136,7 @@ import { getSuiProvider } from "../utils/sui";
 import { postWithFees, waitForTerraExecution } from "../utils/terra";
 import { postWithFeesXpla, waitForXplaExecution } from "../utils/xpla";
 import useTransferTargetAddressHex from "./useTransferTargetAddress";
+import { TransactionSignerPair } from "@certusone/wormhole-sdk/lib/cjs/algorand";
 
 type AdditionalPayloadOverride = {
   receivingContract: Uint8Array;
@@ -235,18 +236,7 @@ async function algo(
       ALGORAND_HOST.algodServer,
       ALGORAND_HOST.algodPort
     );
-    const txs = await transferFromAlgorand(
-      algodClient,
-      ALGORAND_TOKEN_BRIDGE_ID,
-      ALGORAND_BRIDGE_ID,
-      senderAddr,
-      BigInt(tokenAddress),
-      transferAmountParsed.toBigInt(),
-      uint8ArrayToHex(additionalPayload?.receivingContract || recipientAddress),
-      recipientChain,
-      feeParsed.toBigInt(),
-      additionalPayload?.payload
-    );
+    const txs = [""] as unknown as TransactionSignerPair[];
     const result = await signSendAndConfirmAlgorand(algodClient, txs);
     const sequence = parseSequenceFromLogAlgorand(result);
     dispatch(

@@ -33,6 +33,7 @@ import {
   TerraChainId,
   CHAIN_ID_SEI,
   cosmos,
+  CHAIN_ID_OPTIMISM_SEPOLIA
 } from "@certusone/wormhole-sdk";
 import { clusterApiUrl } from "@solana/web3.js";
 import { getAddress } from "ethers/lib/utils";
@@ -180,6 +181,11 @@ export const CHAINS: ChainInfo[] =
         {
           id: CHAIN_ID_OPTIMISM,
           name: "Optimism (Goerli)",
+          logo: optimismIcon,
+        },
+        {
+          id: CHAIN_ID_OPTIMISM_SEPOLIA,
+          name: "Optimism (Sepolia)",
           logo: optimismIcon,
         },
         {
@@ -427,12 +433,14 @@ export const NEON_NETWORK_CHAIN_ID = CLUSTER === "testnet" ? 245022926 : 1381;
 export const ARBITRUM_NETWORK_CHAIN_ID = CLUSTER === "testnet" ? 421613 : 1381;
 export const MOONBEAM_NETWORK_CHAIN_ID = CLUSTER === "testnet" ? 1287 : 1381;
 export const BASE_NETWORK_CHAIN_ID = CLUSTER === "testnet" ? 84531 : 1381;
-export const OPTIMISM_NETWORK_CHAIN_ID = CLUSTER === "testnet" ? 420 : 1381;
+export const OPTIMISM_NETWORK_CHAIN_ID = CLUSTER === "testnet" ? 11155420 : 1381;
 export const getEvmChainId = (chainId: ChainId) =>
   chainId === CHAIN_ID_ETH
     ? ETH_NETWORK_CHAIN_ID
     : chainId === CHAIN_ID_SEPOLIA
     ? SEPOLIA_NETWORK_CHAIN_ID
+    : chainId === 10005
+    ? 11155420
     : chainId === CHAIN_ID_BSC
     ? BSC_NETWORK_CHAIN_ID
     : chainId === CHAIN_ID_POLYGON

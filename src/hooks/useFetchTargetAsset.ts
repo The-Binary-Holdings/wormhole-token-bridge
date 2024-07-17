@@ -484,44 +484,6 @@ function useFetchTargetAsset(nft?: boolean) {
           }
         }
       }
-      if (targetChain === CHAIN_ID_ALGORAND && originChain && originAsset) {
-        dispatch(setTargetAsset(fetchDataWrapper()));
-        try {
-          const algodClient = new algosdk.Algodv2(
-            ALGORAND_HOST.algodToken,
-            ALGORAND_HOST.algodServer,
-            ALGORAND_HOST.algodPort
-          );
-          const asset = await getForeignAssetAlgorand(
-            algodClient,
-            ALGORAND_TOKEN_BRIDGE_ID,
-            originChain,
-            originAsset
-          );
-          if (!cancelled) {
-            dispatch(
-              setTargetAsset(
-                receiveDataWrapper({
-                  doesExist: !!asset,
-                  address: asset === null ? asset : asset.toString(),
-                })
-              )
-            );
-            setArgs();
-          }
-        } catch (e) {
-          console.error(e);
-          if (!cancelled) {
-            dispatch(
-              setTargetAsset(
-                errorDataWrapper(
-                  "Unable to determine existence of wrapped asset"
-                )
-              )
-            );
-          }
-        }
-      }
       if (targetChain === CHAIN_ID_INJECTIVE && originChain && originAsset) {
         dispatch(setTargetAsset(fetchDataWrapper()));
         try {
